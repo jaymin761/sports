@@ -16,6 +16,7 @@ import { AdminRole, FriendStatus, NotificationType, TrustStatus, UserType } from
 import mongoose, { ObjectId } from "mongoose";
 import eventEmitter from "../../../utils/event";
 
+const passport = require('passport');
 const bcrypt = require("bcryptjs");
 const multer = require("multer");
 
@@ -51,8 +52,47 @@ async function adminDashboard(req: Request, res: Response) {
 async function adminLogin(req: Request, res: Response) {
     res.render('login');
 }
+// async function adminLoginPost(req: Request, res: Response) {
+//     try {
+//         passport.authenticate('local', (err: any, user: any, info: any) => {
+//             var responseData = {};
+            
+//             if (err) {
+//                 // responseData.error = err;
+//                 // responseData.success = false;
+//                 // return res.send(responseData);
+//                 console.log(err);
+                
+//             }
+//             if (!user) {
+//                 // responseData.error = info;
+//                 // responseData.success = false;
+//                 // return res.send(responseData);
+//                 console.log(info);
+
+//             }
+//             // establish session
+//             req.logIn(user, function(err: any) {
+//                 if (err) {
+//                     // responseData.error = 'Wrong Credentials';
+//                     // responseData.success = false;
+//                     // return res.send(responseData);
+//                     console.log("Wrong Credentials");
+                    
+//                 } else {
+//                     console.log("login success");
+//                     // responseData.success = true;
+//                     // return res.send(responseData);
+//                 }
+//             });
+//         })(req, res);
+//     } catch (error) {
+//         console.log('err' + error);
+//     }
+// }
 export default {
     adminRegister,
     adminDashboard,
-    adminLogin
+    adminLogin,
+    // adminLoginPost
 };

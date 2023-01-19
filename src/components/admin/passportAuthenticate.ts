@@ -5,7 +5,7 @@ const AdminModel = require("./models/admin");
 
 
 module.exports = function(passport: any) {
-    passport.use(
+    passport.use('admin-local',
         new LocalStrategy({ usernameField: 'email', passwordField: 'password' }, (email: string, password : string, next: any) => {
             // console.log(email, password);
             AdminModel.findOne({ email: email }, function(err: any, user: any) {
