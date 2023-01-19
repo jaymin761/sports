@@ -4,10 +4,6 @@ import { AppConstants } from "../../../utils/appConstants";
 const mongoose_ = require('mongoose');
 
 const adminSchema = new mongoose_.Schema({
-    adminrole:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: AppConstants.MODEL_ROLE
-    },
     username: {
         type: String,
         require: true,
@@ -25,9 +21,6 @@ const adminSchema = new mongoose_.Schema({
         type: String,
         require: false,
         default: null,
-    },
-    about: {
-        type: String,
     },
     image: {
         type: String,

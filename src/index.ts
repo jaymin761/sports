@@ -7,7 +7,6 @@ import userRoute from "./components/users";
 import adminRoute from "./components/admin";
 import corsOptions from "./utils/corsOptions";
 import { NextFunction, Request, Response } from "express";
-import moment from "moment";
 import { mkdir } from "fs";
 
 var morgan = require('morgan');
@@ -18,6 +17,9 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+var passport = require('passport');
+var session = require('express-session');
+var MongoStore = require('connect-mongo')(session);
 require('dotenv').config()
 
 
@@ -57,6 +59,18 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
 });
 app.use(cors(corsOptions))
 app.use(cookieParser());
+app.use(session({
+    secret: config.get("SECRET_KEY"),
+    resave: true,
+    saveUninitialized: true,
+    store: new MongoStore({ mongooseConnection: mongoose.connection })
+}));
+
+// passportAuthenticate(initialise the passport session)
+require('./components/admin/passportAuthenticate')(passport);
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use(express.json({limit : '50mb'}))
 app.use(bodyParser.json({ limit: '50mb' }))
