@@ -57,7 +57,7 @@ app.use(function (req: Request, res: Response, next: NextFunction) {
     );
     next();
 });
-app.use(cors(corsOptions))
+// app.use(cors(corsOptions))
 app.use(cookieParser());
 app.use(session({
     secret: config.get("SECRET_KEY"),
@@ -75,6 +75,9 @@ app.use(passport.session());
 app.use(express.json({limit : '50mb'}))
 app.use(bodyParser.json({ limit: '50mb' }))
 app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }))
+app.use(express.static(path.join(__dirname, 'components/admin/public')));
+app.set('views', path.join(__dirname, 'components/admin/views'));
+app.set('view engine', 'ejs');
 
 app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 

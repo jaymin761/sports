@@ -45,7 +45,10 @@ async function adminRegister(req: Request, res: Response) {
     await admin.save();
     return commonUtils.sendAdminSuccess(req, res, { message: "Admin Register successfully", id: admin._id });
 }
-
+async function adminDashboard(req: Request, res: Response) {
+    res.render('dashboard/dashboard');
+}
 export default {
     adminRegister,
+    adminDashboard
 };

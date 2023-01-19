@@ -10,6 +10,12 @@ import validation from "./validation";
 
 export default [
     {
+        path: "/",
+        method: "get",
+        controller: authController.adminDashboard,
+        isPublic: true
+    },
+    {
         path: "/register",
         method: "post",
         controller: authController.adminRegister,
