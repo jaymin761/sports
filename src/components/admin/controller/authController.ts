@@ -48,7 +48,11 @@ async function adminRegister(req: Request, res: Response) {
 async function adminDashboard(req: Request, res: Response) {
     res.render('dashboard/dashboard');
 }
+async function adminLogin(req: Request, res: Response) {
+    res.render('login');
+}
 export default {
     adminRegister,
-    adminDashboard
+    adminDashboard,
+    adminLogin
 };

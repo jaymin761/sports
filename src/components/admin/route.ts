@@ -16,6 +16,12 @@ export default [
         isPublic: true
     },
     {
+        path: "/login",
+        method: "get",
+        controller: authController.adminDashboard,
+        isPublic: true
+    },
+    {
         path: "/register",
         method: "post",
         controller: authController.adminRegister,
