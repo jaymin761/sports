@@ -1,0 +1,10 @@
+/node_modules
+/*.dio
+/src/uploads/audio
+/src/uploads/files
+/src/uploads/images
+/src/uploads/video
+/src/uploads/sampleFile
+/.vscode
+build
+src/components/chat/.DS_Store
