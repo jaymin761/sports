@@ -8,15 +8,12 @@ type DestinationCallback = (error: Error | null, destination: string) => void
 type FileNameCallback = (error: Error | null, filename: string) => void
 const path = require('path')
 const Image = require('../../src/components/users/models/imageModel');
-const Notification = require('../components/notification/notificationModel');
 const User = require('../components/users/models/userModel');
 const os = require('os')
 const md5 = require("md5");
 import decryptedData from "../middlewares/secure/decryptData";
 import verifyToken from "../middlewares/validations";
 import { groupEvents, MicroComponent, NotificationType } from "./enum";
-import BusinessValidation from "../components/business/validation"
-import { firebaseMessaging } from "../components/notification/firebase";
 import mongoose from "mongoose";
 const getRootDir = () => path.parse(process.cwd()).root
 const getHomeDir = () => os.homedir()
@@ -278,15 +275,6 @@ const routeArray = (array_: any, prefix: any, isAdmin: Boolean = false, componen
         if (isAdmin) {
             middlewares.push(verifyToken.isAdmin);
         }
-        if (component && !skipComponentId) {
-            switch (component) {
-                case MicroComponent.BUSINESS:
-                    middlewares.push(BusinessValidation.hasBusinessValidation)
-                    break;
-                default:
-                    break;
-            }
-        }
         if (validation) {
             if (Array.isArray(validation)) {
                 middlewares.push(...validation);
@@ -327,40 +315,7 @@ function secondsToDhms(seconds: number) {
     return dDisplay + hDisplay + mDisplay + sDisplay;
 }
 const notifyToUser = async (userId: any, data_: any, token: any) => {
-    try {
-
-        const options = {
-            priority: "high",
-            content_available: true,
-            timeToLive: 60 * 60 * 24,
-        };
-        let data = data_;
-        data.notification = { ...data.notification, sound: "default", click_action: "FLUTTER_NOTIFICATION_CLICK" }
-
-        const notify = new Notification({
-            userId: new mongoose.Types.ObjectId(userId),
-            notification: data.notification,
-            data: data.data
-        })
-        if (data.data.senderId) notify.senderId = new mongoose.Types.ObjectId(data.data.senderId);
-        if (data.data.businessId) notify.businessId = new mongoose.Types.ObjectId(data.data.businessId);
-        await notify.save()
-
-        const badge = await Notification.count({ isRead: false, userId: new mongoose.Types.ObjectId(userId) })
-
-        data.notification = { ...data.notification, badge: badge.toString() }
-        if (!token) return
-
-        await firebaseMessaging.sendToDevice(token, data, options).then((value: any) => {
-            console.log('Successfully sent message:', value);
-        }).catch((error: any) => {
-            console.log('Error sending message:', error?.errorInfo);
-            throw error
-        })
-        return true
-    } catch (er: any) {
-        console.log('notifcation error', er.message);
-    }
+   
 }
 
 // async function veriyFirebaseMobileOtp(idToken: any) {

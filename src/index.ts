@@ -4,18 +4,7 @@ import path from "path";
 import eventEmitter from "./utils/event";
 import authRoute from "./components/userAuth";
 import userRoute from "./components/users";
-import eventRoute from "./components/event";
-import trustRoute from "./components/trust";
-import userLinkRoute from "./components/userLink";
-import businessRoute from "./components/business";
-import employeeRoute from "./components/employee";
-import socialsRoute from "./components/socials";
-import chatRoute from "./components/chat"
 import adminRoute from "./components/admin";
-import reportRoute from "./components/report"
-import raiseIssueRoute from "./components/raiseIssue"
-import notification from "./components/notification";
-import { connectionHandler } from "./components/chat/SocketController";
 import corsOptions from "./utils/corsOptions";
 import { NextFunction, Request, Response } from "express";
 import moment from "moment";
@@ -81,34 +70,14 @@ app.set('eventEmitter', eventEmitter)
 app.prefix('/user', (route: any) => {
     authRoute(route)
     userRoute(route)
-    trustRoute(route)
-    userLinkRoute(route)
-    eventRoute(route)
-    reportRoute(route)
 })
 
-app.prefix('/business', (route: any) => {
-    businessRoute(route)
-})
+
 
 app.prefix('/admin', (route: any) => {
     adminRoute(route)
 })
-app.prefix('/employee', (route: any) => {
-    employeeRoute(route)
-})
-app.prefix('/chat', (route: any) => {
-    chatRoute(route)
-})
-app.prefix('/socials', (route: any) => {
-    socialsRoute(route)
-})
-app.prefix('/report', (route: any) => {
-    raiseIssueRoute(route)
-})
-app.prefix('/notification', (route: any) => {
-    notification(route)
-})
+
 
 const http = require('http');
 const server = http.createServer(app);
@@ -123,7 +92,7 @@ server.listen(config.get("PORT"), () => {
         () => console.log('connected to mongodb.')
     );
     redisClient.on('error', (err: any) => console.log('Redis Client Error', err));
-    io.on('connection', connectionHandler);
+    // io.on('connection', connectionHandler);
 
     agenda.start().then(() => {
         console.log(`⏳ agenda is started`);

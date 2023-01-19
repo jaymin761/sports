@@ -1,5 +1,4 @@
 import {Agenda} from 'agenda';
-import {myTrustLevel} from "./trustLevelUtils";
 import {TrustStatus} from "./enum";
 import {arcHav} from "./locationUtils/MathUtil";
 import mongoose from "mongoose";
@@ -9,9 +8,7 @@ const config = require("config");
 
 const agenda = new Agenda({db: {address: config.get("DB_CONN_STRING"), collection: 'verifyLocationSchedule'}});
 const User = require("../components/users/models/userModel")
-const Employee = require("../components/employee/employeeModel")
 const LocationTraces = require("../components/users/models/locationTrace")
-const Trust = require("../components/admin/models/trustModel")
 
 //agenda define here
 
@@ -48,33 +45,33 @@ agenda.define("evaluateHomeAddressVerification", async (args: any) => {
         /**
          *   GET trust level constant
          * */
-        const myTrustConstant: number = myTrustLevel(
-            user.trustLevel?.image?.valueOf() ?? TrustStatus.PENDING,
-            user.trustLevel?.id?.valueOf() ?? TrustStatus.PENDING,
-            user.trustLevel?.reference?.valueOf() ?? TrustStatus.PENDING,
-            user.trustLevel?.address?.valueOf() ?? TrustStatus.PENDING,
-        )
+        // const myTrustConstant: number = myTrustLevel(
+        //     user.trustLevel?.image?.valueOf() ?? TrustStatus.PENDING,
+        //     user.trustLevel?.id?.valueOf() ?? TrustStatus.PENDING,
+        //     user.trustLevel?.reference?.valueOf() ?? TrustStatus.PENDING,
+        //     user.trustLevel?.address?.valueOf() ?? TrustStatus.PENDING,
+        // )
 
-        const trust = await Trust.findOne({
-            combine: myTrustConstant
-        }).select("message name star")
+        // const trust = await Trust.findOne({
+        //     combine: myTrustConstant
+        // }).select("message name star")
 
         /**
          *  Evaluate Trust Level using constant
          * */
-        await User.updateOne({
-            _id: data.userId
-        }, {
-            $set: {
-                trustLevel: {
-                    image: user.trustLevel.image,
-                    id: user.trustLevel.id,
-                    reference: user.trustLevel.reference,
-                    address: ((successTraces / locationTraces.length) * 100) >= 30 ? TrustStatus.ACCEPT : TrustStatus.INVALID,
-                },
-                averageTrust: trust?.star ?? user.averageTrust
-            }
-        })
+        // await User.updateOne({
+        //     _id: data.userId
+        // }, {
+        //     $set: {
+        //         trustLevel: {
+        //             image: user.trustLevel.image,
+        //             id: user.trustLevel.id,
+        //             reference: user.trustLevel.reference,
+        //             address: ((successTraces / locationTraces.length) * 100) >= 30 ? TrustStatus.ACCEPT : TrustStatus.INVALID,
+        //         },
+        //         averageTrust: trust?.star ?? user.averageTrust
+        //     }
+        // })
 
         // console.log("before evaluateHomeAddressNotification");
 
@@ -96,26 +93,6 @@ agenda.define("evaluateHomeAddressVerification", async (args: any) => {
     }
 
 })
-
-agenda.define('available', async (job: any) => {
-        const {employee_id} = job.attrs.data;
-        const EmployeeUnavailable = await Employee.findOne({_id: employee_id});
-        EmployeeUnavailable.available = 1
-        EmployeeUnavailable.reason = null
-        EmployeeUnavailable.startDate = null
-        EmployeeUnavailable.endDate = null
-        EmployeeUnavailable.requestStatus = 3
-        EmployeeUnavailable.save();
-    }
-);
-
-agenda.define('unavailable', async (job: any) => {
-        const {employee_id} = job.attrs.data;
-        const EmployeeUnavailable = await Employee.findOne({_id: employee_id});
-        EmployeeUnavailable.available = 0
-        EmployeeUnavailable.save();
-    }
-);
 
 agenda.define('activeUser', async (job: any) => {
         const {user_id} = job.attrs.data;

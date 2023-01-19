@@ -1,11 +1,8 @@
 import {EventEmitter} from 'events';
 import Mail from '../../src/components/email';
 import Phone from '../../src/components/phone';
-import trustController from "../../src/components/trust/trustController"
 import {io} from "../index";
-import chatController from "../components/chat/chatController";
 
-const UserProfile = require("../../src/components/chat/models/userProfile")
 const eventEmitter = new EventEmitter();
 
 // eventEmitter.on('send_email', (data: any) => {
@@ -54,32 +51,6 @@ eventEmitter.on('send_phone_otp', (data: any) => {
     }
 });
 
-//TODO: when new user register check for their email or mobile match and send them endorsed notification
-eventEmitter.on('user.checkForSelfEndorsed', (data: any) => trustController.checkForSelfEndorsed(data));
-eventEmitter.on('user.checkOnReferencesEndorsed', (data: any) => trustController.checkOnreferencesEndorsed(data));
-
-eventEmitter.on('business.checkOnReferencesEndorsed', (data: any) => trustController.checkOnBusinessReferencesEndorsed(data));
-
-
-/**
- *   @description Add Location Trace
- *   @param userId & Address
- * */
-eventEmitter.on('addLocationTrace', async (data: any) => trustController.addLocation(data))
-
-/**
- *  @description Register Chat User
- *  @param user's id, name, image
- * */
-eventEmitter.on('registerChatUser', chatController.registerChatUser)
-
-/**
- *  @description Update Chat User
- *  @param user's id, name, image
- * */
-eventEmitter.on('updateChatUser', chatController.updateChatUser)
-
-eventEmitter.on('evaluateHomeAddressNotification', trustController.sendHomeAddressNotification)
 
 
 export default eventEmitter;

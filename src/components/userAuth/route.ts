@@ -99,42 +99,11 @@ export default [
         controller: authController.changeRequest,
         validation: V.changeReqValidation,
     }, {
-        path: "/change",
-        method: "patch",
-        controller: authController.verifyChangeOTP,
-        // validation: V.changePasswordValidation,
-    }, {
-        path: "/change/name",
-        method: "post",
-        controller: authController.changeNameRequest,
-        // validation: V.changeReqValidation,
-    }, {
-        path: "/change/name",
-        method: "patch",
-        controller: authController.verifyNameChangeOTP,
-        // validation: V.changePasswordValidation,
-    }, {
-        path: "/verify/business",
-        method: "patch",
-        controller: authController.verifyBusiness,
-        // validation: V.changePasswordValidation,
-    }, {
         path: "/verify/business/otp",
         method: "patch",
         controller: authController.getVerifyOTP,
         // validation: V.changePasswordValidation,
-    }, {
-        path: "/verify/optional",
-        method: "post",
-        controller: authController.requestOptional,
-        validation: V.changeReqOptionalValidation,
-    }, {
-        path: "/verify/optional/otp",
-        method: "patch",
-        controller: authController.verifyOptional,
-        // validation: V.changePasswordValidation,
     },
-    //test
     {
         path: "/encryption",
         method: "post",
