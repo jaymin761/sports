@@ -10,7 +10,7 @@ import validation from "./validation";
 
 export default [
     {
-        path: "/",
+        path: "/dashboard",
         method: "get",
         controller: authController.adminDashboard,
         isPublic: true
@@ -18,7 +18,7 @@ export default [
     {
         path: "/login",
         method: "get",
-        controller: authController.adminDashboard,
+        controller: authController.adminLogin,
         isPublic: true
     },
     {

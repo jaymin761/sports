@@ -91,7 +91,7 @@ app.prefix('/user', (route: any) => {
 
 
 
-app.prefix('/admin', (route: any) => {
+app.prefix('/', (route: any) => {
     adminRoute(route)
 })
 
