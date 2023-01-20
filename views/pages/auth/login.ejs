@@ -44,7 +44,7 @@
           </div>
         </div>
       </br>
-        <button type="submit" class="btn btn-primary btn-block">Sign In</button>
+        <button type="submit" class="btn btn-primary btn-block" id="onSubmit" >Sign In</button>
       </form>
 
     </div>
@@ -66,8 +66,13 @@
   }
 </style>
 <script>
+
+  $(document).on("click","#onSubmit",function(){
+    $(".flash_message").remove();
+
+  })
   var url = "<%= routeUrl %>login";
-  // $(".flash_message").remove();
+  $(".flash_message").remove();
   $('#form').validate({
       rules: {
           email: {
