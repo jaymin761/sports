@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
-
-console.log(process.env.ENV);
+var constants = require('./modelConstants');
+var bcrypt = require('bcryptjs');
 //live url
 if (process.env.ENV == "stg" || process.env.ENV == "prod") {
     const DB_USER = process.env.DB_USERNAME;
@@ -29,6 +29,20 @@ var connectMongoose = function() {
    
     mongoose.connect(DB_URL).then(connection => {
         console.log('Connected to MongoDB')
+var AdminModel = mongoose.model(constants.adminSchema);
+
+        async function adminCreate(){
+            const adminData = await AdminModel.findOne()
+            if(!adminData){
+                var salt = bcrypt.genSaltSync(10);
+                var hash = bcrypt.hashSync("admin@123", salt);
+                 await AdminModel.create({
+                     email:"admin@admin.com",
+                     password:hash,
+                 })
+            }
+         }
+         adminCreate()
     }).catch(error => {
         console.log(error.message);
     })
