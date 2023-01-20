@@ -1,0 +1,201 @@
+<%- include('../../partials/header.ejs') %>
+    <div class="toolbar py-2" id="kt_toolbar">
+        <div id="kt_toolbar_container" class="container-fluid d-flex align-items-center">
+            <div class="flex-grow-1 flex-shrink-0 me-5 flex-wrap"></div>
+            <div class="d-flex align-items-center flex-wrap">
+                <div class="flex-shrink-0 me-2">
+                    <h1 class="d-flex align-items-center text-dark fw-bold my-1 fs-3"><a href="/admin/dashboard">Dashboard</a>
+                        <span class="h-20px border-gray-200 border-start ms-3 mx-2">/</span>
+                        <small class="text-muted fs-7 fw-semibold my-1 ms-1"><%= pageName %></small>
+                    </h1>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
+        <div id="kt_content_container" class="container-xxl">
+            <div class="card mb-5 mb-xl-10">
+                <div class="card-header border-0 cursor-pointer" role="button" data-bs-toggle="collapse" data-bs-target="#kt_account_profile_details" aria-expanded="true" aria-controls="kt_account_profile_details">
+                    <div class="card-title m-0">
+                        <h3 class="fw-bold m-0">
+                            <%= pageName %>
+                        </h3>
+                    </div>
+                </div>
+                <div id="kt_account_settings_profile_details" class="collapse show">
+                    <form class="form w-100" method="post" id="form">
+                        <input type="text" value="<%= data._id %>" id="id" name="id" hidden />
+                        <div class="card-body border-top p-9">
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Fisrt Name</label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 fv-row">
+                                            <input type="text" id="firstName" name="firstName" class="form-control form-control-lg" placeholder="First name" value="<%= data.firstName %>" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Last Name</label>
+                                <div class="col-lg-8">
+                                    <div class="row">
+                                        <div class="col-lg-6 fv-row">
+                                            <input type="text" id="lastName" name="lastName" class="form-control form-control-lg" placeholder="Last name" value="<%= data.lastName %>" autocomplete="off" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label required fw-semibold fs-6">Email</label>
+                                <div class="col-lg-8 fv-row">
+                                    <input type="email" id="email" name="email" class="form-control form-control-lg " placeholder="Email" value="<%= data.email %>" autocomplete="off" />
+                                </div>
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                    <span class="required">Contact Phone</span>
+                                </label>
+                                <div class="col-lg-8 fv-row">
+                                    <input type="text" id="contactNo" name="contactNo" class="form-control form-control-lg " placeholder="Phone number" value="<%= data.contactNo %>" autocomplete="off" required />
+                                </div>
+
+                            </div>
+                            <div class="row mb-6">
+                                <label class="col-lg-4 col-form-label fw-semibold fs-6">
+                                    <span class="required">Password</span>
+                                </label>
+                                <div class="col-lg-8 fv-row">
+                                    <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Password" autocomplete="off" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-footer d-flex justify-content-end py-6 px-9">
+                            <button type="reset" class="btn btn-light btn-active-light-primary me-2" onclick="cancelSubAdmin()">Cancel</button>
+                            <button type="submit" class="btn btn-primary">
+                                <span class="indicator-label">
+                                    Submit
+                                </span>
+                                <span class="indicator-progress">
+                                    Please wait... <span class="spinner-border spinner-border-sm align-middle ms-2"></span>
+                                </span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <%- include('../../partials/footer.ejs') %>
+        <%- include('../../partials/footerScript.ejs') %>
+
+
+            <script>
+                function cancelSubAdmin() {
+                    window.location.href = '<%= routeUrl %>subadmin'
+                }
+                var id = $("#id").val();
+                var url = "<%= routeUrl %>subadmin/edit/" + id;
+                $(document).ready(function() {
+                    jQuery.validator.addMethod("noSpace", function(value, element) {
+                        value = value.trim();
+                        return value != "";
+                    }, "No space please and don't leave it empty");
+                    $('#form').validate({
+                        rules: {
+                            firstName: {
+                                required: true,
+                                noSpace: true
+                            },
+                            lastName: {
+                                required: true,
+                                noSpace: true
+                            },
+                            conatctNo: {
+                                required: true,
+                                noSpace: true
+                            },
+                            email: {
+                                required: true,
+                                noSpace: true
+                            },
+                        },
+                        messages: {
+                            firstName: {
+                                required: "Please enter first name",
+                                noSpace: "Space not allow",
+                            },
+                            lastName: {
+                                required: "Please enter last name",
+                                noSpace: "Space not allow",
+                            },
+                            contactNo: {
+                                required: "Please enter contact no",
+                                digits: "Please enter only number",
+                            },
+                            email: {
+                                required: "Please enter email",
+                                noSpace: "Space not allow",
+                            },
+                        },
+                        submitHandler: function(form) {
+                            $(".flash_message").remove();
+
+                            var firstName = $('#firstName').val();
+                            var lastName = $('#lastName').val();
+                            var contactNo = $('#contactNo').val();
+                            var email = $('#email').val();
+                            var password = $('#password').val();
+                            $.ajax({
+                                url: url,
+                                method: 'POST',
+                                data: {
+                                    firstName: firstName,
+                                    lastName: lastName,
+                                    contactNo: contactNo,
+                                    email: email,
+                                    password: password,
+                                },
+                                beforeSend: function() {
+                                    $("#form").find('button[type=submit]').attr("data-kt-indicator", "on").attr('disabled', true);
+                                },
+                                success: function(response) {
+                                    $("#form").find('button[type=submit]').attr("data-kt-indicator", "on").attr('disabled', true);
+                                    if (response.success == true) {
+                                        var title = "Sub admin updated successfully."
+                                        var routeurl = "<%= routeUrl %>subadmin"
+                                        toastr.success(title);
+                                        setTimeout(function() {
+                                            window.location.href = routeurl;
+                                        }, 1000);
+                                        // Swal.fire({
+                                        //     title: title,
+                                        //     icon: "success",
+                                        //     type: "success",
+                                        //     showCancelButton: false,
+                                        //     confirmButtonClass: "btn-danger",
+                                        //     confirmButtonText: "Ok",
+                                        //     closeOnConfirm: true,
+                                        // }).then((result) => {
+                                        //     if (result.isConfirmed) {
+                                        //         window.location.href = routeurl;
+                                        //     }
+                                        // })
+                                    } else {
+                                        $("#form").find('button[type=submit]').attr("data-kt-indicator", "off").attr('disabled', false);
+                                        toastr.error(response.error);
+                                        // $("<div class='flash_message alert alert-danger' role='alert'><span>" + response.error + "</span></div>").insertBefore("form");
+                                    }
+                                },
+                                error: function(response) {
+                                    console.log(response);
+                                }
+                            })
+                        }
+                    });
+                })
+            </script>
+
+            </body>
+
+            </html>

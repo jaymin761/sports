@@ -1,0 +1,6 @@
+{
+    "token_validity": "60d",
+    "otp_expire_minute": 10,
+    "default_page": 1,
+    "pagination": 30
+}
