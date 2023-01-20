@@ -57,7 +57,6 @@ const authController = {
                         responseData.success = false;
                         return res.send(responseData);
                     } else {
-
                         responseData.success = true;
                         return res.send(responseData);
                     }

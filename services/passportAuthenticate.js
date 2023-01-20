@@ -18,7 +18,6 @@ module.exports = function(passport) {
                     return next(null, false, "Wrong Credentials !");
                 }
                 if (user) {
-                    if (user.status == true) {
                         bcrypt.compare(password, user.password, function(err, result) {
                             if (err) {
                                 return next(err);
@@ -29,9 +28,6 @@ module.exports = function(passport) {
                                 return next(null, false, "Wrong Credentials !");
                             }
                         });
-                    } else {
-                        return next(null, false, "Your account has been disabled temporary. for more information kindly contact admin");
-                    }
                 }
             })
         }));

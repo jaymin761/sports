@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 
 const authController = {
     dashboard: async function(req, res, next){
-        res.render('pages/dashboard', responseData);
+        console.log("dasd");
+        res.render('pages/dashboard');
     }
 }
 module.exports = authController
