@@ -1,1 +1,2 @@
 require('./adminModel');
+require('./sportsModel');
