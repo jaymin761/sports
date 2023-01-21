@@ -159,7 +159,7 @@ const authController = {
 
     changePassword: async function(req, res, next) {
         var responseData = {};
-        responseData.pageName = 'Profile';
+        responseData.pageName = 'Chnage Password';
         responseData.pageTitle = process.env.APPNAME + " | " + responseData.pageName;
         try {
             var data = await adminModel.findById(req.user.id).exec();
@@ -173,7 +173,7 @@ const authController = {
 
     },
 
-    changePasswordPOst: async function(req, res, next) {
+    changePasswordPost: async function(req, res, next) {
         var responseData = {};
         var { oldpassword, newpassword, confirmpassword } = req.body;
 
