@@ -37,6 +37,7 @@ var AdminModel = mongoose.model(constants.adminSchema);
                 var salt = bcrypt.genSaltSync(10);
                 var hash = bcrypt.hashSync("admin@123", salt);
                  await AdminModel.create({
+                     name:"admin,",
                      email:"admin@admin.com",
                      password:hash,
                  })
