@@ -3,6 +3,10 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var adminSchema = new Schema({
+    name: {
+        type: String,
+        default: null
+    },
     email: {
         type: String,
         default: null

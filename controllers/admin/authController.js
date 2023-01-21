@@ -71,11 +71,12 @@ const authController = {
         var responseData = {};
         responseData.pageName = 'Profile';
         responseData.pageTitle = process.env.APPNAME + " | " + responseData.pageName;
+
         try {
             var data = await adminModel.findById(req.user.id).exec();
             if (data) {
                 responseData.user = data;
-                res.render('pages/auth/profile', responseData);
+                res.render('pages/auth/changePassword', responseData);
             }
         } catch (error) {
             console.log('err' + error);
@@ -103,35 +104,10 @@ const authController = {
         var userId = req.user.id;
         req.newData = {}
         var result = await adminModel.findById({ '_id': userId }).exec();
+        var { name } = req.body;
 
-        var { firstName, lastName, contactNo, email } = req.body;
-
-        if (req.file) {
-            filename = Date.now() + "." + mine.extension(req.file.mimetype);
-            var file = APPDIR + '/public/images/admin/' + filename;
-            fs.rename(req.file.path, file, function(err) {
-                if (err) {
-                    console.log(err);
-                } else {
-                    console.log("image upload");
-                }
-            });
-            req.newData.avatar = "images/admin/" + filename;
-            if (result.avatar) {
-                fs.unlink(APPDIR + '/public/' + result.avatar, () => {
-                    console.log("delete");
-                });
-            }
-        }
-        if (firstName.length > 0) {
-            req.newData.firstName = firstName;
-        }
-        if (lastName.length > 0) {
-            req.newData.lastName = lastName;
-        }
-        if (contactNo.length > 0) {
-            req.newData.contactNo = contactNo;
-        }
+        console.log(name);
+        req.newData.name = name;
         try {
             await adminModel.findOneAndUpdate({ _id: userId }, req.newData, { upsert: true }, async function(err, result) {
                 if (err) {
@@ -142,13 +118,13 @@ const authController = {
                         responseData.success = false;
                         responseData.error = 'Something went wrong !';
                     }
-                    return res.redirect('/admin/profile');
+                    // return res.redirect('/admin/profile');
 
-                    // return res.send(responseData);
+                    return res.send(responseData);
                 } else {
                     responseData.success = true;
-                    return res.redirect('/admin/profile');
-                    // return res.send(responseData);
+                    // return res.redirect('/admin/profile');
+                    return res.send(responseData);
                 }
             })
         } catch (error) {
@@ -176,7 +152,6 @@ const authController = {
     changePasswordPost: async function(req, res, next) {
         var responseData = {};
         var { oldpassword, newpassword, confirmpassword } = req.body;
-
 
         try {
             var result = await adminModel.findById(req.user.id).exec();
