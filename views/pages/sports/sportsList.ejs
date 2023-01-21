@@ -227,7 +227,7 @@
                       $("#modal-default").modal("hide");
                       $("#sport-save").attr('disabled', false);
                       $("#sport-form").trigger("reset");
-                      $("#example1").DataTable().reload();
+                      $("#example1").draw();
                       toastr.success(data.message);
                     } else {
                       $("#sport-save").attr('disabled', false);
