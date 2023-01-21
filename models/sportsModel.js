@@ -16,7 +16,7 @@ var sportSchema = new Schema({
     status: {
         type: Number,
         require: false,
-        default: null,
+        default: 0,
     },
     deletedStatus: {
         type: Number,

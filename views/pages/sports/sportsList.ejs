@@ -1,83 +1,248 @@
-<%- include('../../partials/header.ejs') %>
-<%- include('../../partials/sidebar.ejs') %>
+<%-include('../../partials/header.ejs') %>
+  <%-include('../../partials/sidebar.ejs') %>
 
-<div class="content-wrapper">
-  <!-- Content Header (Page header) -->
-  <section class="content-header">
-    <div class="container-fluid">
-      <div class="row mb-2">
-        <div class="col-sm-6">
-          <h1>DataTables</h1>
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Sports</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">DataTables</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <button type="button" id="add-sports" class="btn btn-default" data-toggle="modal"
+                    data-target="#modal-default">
+                    Add Sports
+                  </button>
+                  <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Icon</th>
+                        <th>Status</th>
+                      </tr>
+                    </thead>
+
+                    <tbody>
+                      <% for(let i=0; i < data.length; i++) { %>
+                        <tr>
+                          <td>
+                            <%= i+1%>
+                          </td>
+                          <td>
+                            <%= data[i].name%>
+                          </td>
+                          <td><img src="<%=siteUrl%>images/<%= data[i].icon%>" alt="" style='height:50px;width:50px;'>
+                          </td>
+                          <td>
+                            <%if(data[i].status==1){%>
+                             <span class="badge bg-danger">Enable</span>
+                            <%}else{%>
+                               <span class="badge bg-danger">Disable</span>
+                            <%}%>
+
+                          </td>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-6">
-          <ol class="breadcrumb float-sm-right">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">DataTables</li>
-          </ol>
+      </section>
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <form name="sport-form" id="sport-form" method="post">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title">Create Sports</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">Icon</label>
+                    <div class="input-group">
+                      <input type="file" name="icon_image" class="custom-file-input" id="icon-error"
+                        onchange="readURL(this)">
+                      <label class="custom-file-label" for="icon-error">Choose file</label>
+                      <div class="col-lg-3 p-1 m-2">
+                        <img src="/assets/img/preview-img.png" id="show_preview" name="show_preview" class="w-100"
+                          alt="show perview">
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="form-group">
+                    <label for="exampleInputFile" style="margin-right: 19px;">Enable/Desable </label>
+                    <input type="checkbox" value="1" id="status" name="status" checked data-bootstrap-switch>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="sport-save">Save</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
-    </div><!-- /.container-fluid -->
-  </section>
 
-  <!-- Main content -->
-  <section class="content">
-    <div class="container-fluid">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">DataTable with minimal features & hover style</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <table id="example2" class="table table-bordered table-hover">
-                <thead>
-                <tr>
-                  <th>Rendering engine</th>
-                  <th>Browser</th>
-                  <th>Platform(s)</th>
-                  <th>Engine version</th>
-                  <th>CSS grade</th>
-                </tr>
-                </thead>
-               
-               <tbody>
-                <% for(let i=0; i < data.length; i++) { %>
-                  <tr></tr>
-                  <tr></tr>
-                  <tr></tr>
-                  <tr></tr>
-                  <tr></tr>
-                  <%}%>
-               </tbody>
-              </table>
-            </div>
-            <!-- /.card-body -->
-          </div>
-          <!-- /.card -->
 
-          
 
-                  <%- include('../../partials/footer.ejs') %>
-                  <%- include('../../partials/dataTableScript.ejs') %>
-<script>
+      <%- include('../../partials/footer.ejs') %>
+        <%- include('../../partials/dataTableScript.ejs') %>
+          <script>
 
-  
-  $(function () {
-    $("#example1").DataTable({
-      "responsive": true, "lengthChange": false, "autoWidth": false,
-      "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-    $('#example2').DataTable({
-      "paging": true,
-      "lengthChange": false,
-      "searching": false,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
-    });
-  });
-</script>
-</body>
-</html>
+            $(document).on('click', '#add-sports', function () {
+              $("#sport-form").trigger("reset");
+
+              var validator = $('#sport-form').validate();
+              validator.resetForm();
+              $('.form-control').removeClass('is-invalid')
+              $('#icon-error').removeClass('is-invalid')
+              $('#show_preview').attr('src', '<%=siteUrl%>assets/img/preview-img.png');
+
+            })
+            $("input[data-bootstrap-switch]").each(function () {
+              $(this).bootstrapSwitch('state', $(this).prop('checked'));
+            })
+
+            $(function () {
+              $("#example1").DataTable({
+                "responsive": true, "lengthChange": false, "autoWidth": false,
+                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
+              }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+              $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": false,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+              });
+            });
+
+            function readURL(input) {
+              if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                  if (e.target.result) {
+                    $('#show_preview').attr('src', e.target.result);
+                  } else {
+
+                    $('#show_preview').attr('src', '/assets/img/preview-img.png');
+                  }
+                }
+
+                reader.readAsDataURL(input.files[0]);
+              }
+            }
+            jQuery.validator.addMethod("noSpace", function (value, element) {
+              return value.indexOf(" ") < 0 && value != "";
+            }, "No space please and don't leave it empty");
+
+            $("#sport-form").validate({
+              rules: {
+                name: {
+                  required: true,
+                  noSpace: true
+                },
+                icon_image: {
+                  required: true,
+                },
+              },
+
+              messages: {
+                name: {
+                  required: "Please Enter Name"
+                },
+                icon_image: {
+                  required: "Please Enter Icon",
+                },
+              },
+              errorElement: 'span',
+              errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.parent().append(error);
+              },
+              highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+              },
+              unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+              },
+
+              submitHandler: function (form) {
+
+                $(".fa-category").show();
+                $("#sport-save").attr('disabled', 'disabled');
+
+                var url = "<%= routeUrl %>sport-create";
+
+                var dataForm = new FormData($("#sport-form")[0]);
+
+
+                $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: dataForm,
+                  dataType: "json",
+                  contentType: false,
+                  processData: false,
+                  success: function (data) {
+                    if (data.data.status == 1) {
+                      $("#modal-default").modal("hide");
+                      $("#sport-save").attr('disabled', false);
+                      $("#sport-form").trigger("reset");
+                      $("#example1").DataTable().reload();
+                      toastr.success(data.message);
+                    } else {
+                      $("#sport-save").attr('disabled', false);
+                      // $(".fa-category").hide();
+                      toastr.error(data.message);
+                    }
+
+                  }
+                });
+                return false;
+
+              }
+
+            });
+          </script>
+          </body>
+
+          </html>

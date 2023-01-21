@@ -26,4 +26,6 @@ router.get('/chnagepassword', webAuthenticated, authController.changePassword);
 // dashboard
 router.get('/dashboard', webAuthenticated, dashboardController.dashboard);
 router.get('/sports', webAuthenticated, sportsController.sports);
+router.post('/sport-create', webAuthenticated, sportsController.sportCreate);
+
 module.exports = router;
