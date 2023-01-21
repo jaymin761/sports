@@ -21,5 +21,5 @@ router.get('/logout', webAuthenticated, authController.logout);
 
 // dashboard
 router.get('/dashboard', webAuthenticated, dashboardController.dashboard);
-router.get('/admin/sports', webAuthenticated, dashboardController.sports);
+router.get('/sports', webAuthenticated, dashboardController.sports);
 module.exports = router;
