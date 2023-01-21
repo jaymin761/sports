@@ -106,22 +106,20 @@ const sportsController = {
                 if (req.file) {
                     if (checksport) {
                         if (checksport.icon) {
-                            if (fs.existsSync('./public/images' + checksport.icon)) {
-                                fs.unlinkSync('./public/images' + checksport.icon);
-                            }
+                            fs.unlink(APPDIR + '/public/images/' + checksport.icon, () => {
+                                console.log("delete");
+                            });
                         }
                     }
                     createData.icon = req.file.filename
                 } else {
                     createData.icon = checksport.icon
-                    
-
                 }
                 await sportModel.updateOne({
                     _id: mongoose.Types.ObjectId(id)
                 }, {
                     name:name,
-                    status:status,
+                    // status:status,
                     icon:createData.icon
                 })
                 return createSuccessResponse(res, "update Successfully", { 'status': 1 });
