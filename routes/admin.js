@@ -4,6 +4,7 @@ var { webAuthenticated, webNotAuthenticated, checkIsMaster } = require('../middl
 const authController = require('../controllers/admin/authController');
 const dashboardController = require('../controllers/admin/dashboardController');
 const sportsController = require('../controllers/admin/sportsController');
+const teamsController = require('../controllers/admin/teamsController');
 var router = express.Router();
 
 
@@ -36,5 +37,14 @@ router.get('/sports', webAuthenticated, sportsController.sports);
 router.post('/sport-create', webAuthenticated, sportsController.sportCreate);
 router.post('/sport-delete', webAuthenticated, sportsController.sportDelete);
 router.post('/sport-status', webAuthenticated, sportsController.sportStatus);
+
+// team 
+router.get('/team', webAuthenticated, teamsController.teams);
+router.post('/team-create', webAuthenticated, teamsController.teamCreate);
+router.post('/team-delete', webAuthenticated, teamsController.teamDelete);
+router.post('/team-status', webAuthenticated, teamsController.teamStatus);
+
+
+
 
 module.exports = router;
