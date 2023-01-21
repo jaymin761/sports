@@ -185,7 +185,8 @@
             }
 
             jQuery.validator.addMethod("noSpace", function (value, element) {
-              return value.indexOf(" ") < 0 && value != "";
+              // return value.indexOf(" ") < 0 && value != "";
+              return value == '' || value.trim().length != 0;  
             }, "No space please and don't leave it empty");
 
             $("#sport-form").validate({
