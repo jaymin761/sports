@@ -71,7 +71,7 @@
                              <button class='btn btn-sm btn-danger sport-type-sts' data-status='1' data-id='<%= data[i]._id%>' title='Click to Enabled'><i class='fas fa-lock'></i></button>
                               <%}%>
                     
-                            <button class='btn btn-sm btn-primary edit-sports'  data-info='<%= data[i]%>' data-id='<%= data[i]._id%>' title='Click to Edit'><i class="fas fa-edit" data-toggle="modal"
+                            <button class='btn btn-sm btn-primary edit-sports' data-status='<%= data[i].status%>' data-icon='<%= data[i].icon%>' data-name='<%= data[i].name%>' data-id='<%= data[i]._id%>' title='Click to Edit'><i class="fas fa-edit" data-toggle="modal"
                               data-target="#modal-default"></i></button>
                             <button class='btn btn-sm btn-danger delete-sports' data-id='<%= data[i]._id%>' title='Click to Delete'><i class="fas fa-trash-alt"></i></button>
                           </td>
@@ -101,11 +101,12 @@
                   <div class="form-group">
                     <label for="exampleInputEmail1">Name</label>
                     <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                    <input type="hidden" name="id" id="sport_id">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">Icon</label>
                     <div class="input-group">
-                      <input type="file" name="icon_image" class="custom-file-input" id="icon-error"
+                      <input type="file" name="icon_image" id="icon_image" class="custom-file-input" id="icon-error"
                         onchange="readURL(this)">
                       <label class="custom-file-label" for="icon-error">Choose file</label>
                       <div class="col-lg-3 p-1 m-2">
@@ -115,9 +116,9 @@
                     </div>
                   </div>
                   <br />
-                  <div class="form-group">
+                  <div class="form-group status-remove">
                     <label for="exampleInputFile" style="margin-right: 19px;">Enable/Desable </label>
-                    <input type="checkbox" value="1" id="status" name="status" checked data-bootstrap-switch>
+                    <input type="checkbox" value="1" id="status" name="status"  data-bootstrap-switch>
                   </div>
                 </div>
               </div>
@@ -143,6 +144,9 @@
               $('.form-control').removeClass('is-invalid')
               $('#icon-error').removeClass('is-invalid')
               $('#show_preview').attr('src', '<%=siteUrl%>assets/img/preview-img.png');
+              $('.status-remove').removeClass("d-none");
+
+              $('#sport_id').val('')
 
             })
             $("input[data-bootstrap-switch]").each(function () {
@@ -190,7 +194,13 @@
                   noSpace: true
                 },
                 icon_image: {
-                  required: true,
+                  required:function(){
+                    var li=$('#sport_id').val();
+                    if (li == '') {
+                      return true; 
+                    }
+                  },
+                  accept:"image/jpeg,image/jpg,image/pjpeg",
                 },
               },
 
@@ -200,6 +210,7 @@
                 },
                 icon_image: {
                   required: "Please Enter Icon",
+                  accept: "image must be jpg,jpeg,pjpeg"
                 },
               },
               errorElement: 'span',
@@ -222,7 +233,6 @@
                 var url = "<%= routeUrl %>sport-create";
 
                 var dataForm = new FormData($("#sport-form")[0]);
-
 
                 $.ajax({
                   type: "POST",
@@ -328,10 +338,18 @@
         
             $(document).on("click", ".edit-sports", function () {
               var id = $(this).data('id');
-              alert(id)
-             var info =  $(this).data('info')
-            
-              $('#name').val(info.name)  
+              var name =  $(this).data('name')
+              var icon =  $(this).data('icon')
+              var status =  $(this).data('status')
+              
+              $('#sport_id').val(id)  
+              
+              $('#name').val(name)  
+              $('.status-remove').addClass("d-none");
+
+              if(icon){
+                  $('#show_preview').attr('src', '<%=siteUrl%>images/'+icon);
+              } 
             });
         </script>
           </body>
