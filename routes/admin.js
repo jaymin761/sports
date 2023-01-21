@@ -3,6 +3,7 @@ var multer = require('multer');
 var { webAuthenticated, webNotAuthenticated, checkIsMaster } = require('../middlewares/authenticators/webAuthHandlers');
 const authController = require('../controllers/admin/authController');
 const dashboardController = require('../controllers/admin/dashboardController');
+const sportsController = require('../controllers/admin/sportsController');
 var router = express.Router();
 
 
@@ -21,5 +22,5 @@ router.get('/logout', webAuthenticated, authController.logout);
 
 // dashboard
 router.get('/dashboard', webAuthenticated, dashboardController.dashboard);
-router.get('/sports', webAuthenticated, dashboardController.sports);
+router.get('/sports', webAuthenticated, sportsController.sports);
 module.exports = router;
