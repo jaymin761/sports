@@ -329,11 +329,9 @@
         
             $(document).on("click", ".edit-sports", function () {
               var id = $(this).data('id');
-            var info =  $(this).data('info')
-              info =JSON.stringify(info)
-              info=JSON.parse(info['name'])
-              console.log(info.name);
-              console.log(info);
+              alert(id)
+             var info =  $(this).data('info')
+            
               $('#name').val(info.name)  
             });
         </script>
