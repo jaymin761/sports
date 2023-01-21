@@ -20,6 +20,9 @@ router.get('/login', webNotAuthenticated, authController.login);
 router.post('/login', webNotAuthenticated, authController.loginPost);
 router.get('/logout', webAuthenticated, authController.logout);
 
+// change password
+router.get('/chnagepassword', webAuthenticated, authController.changePassword);
+
 // dashboard
 router.get('/dashboard', webAuthenticated, dashboardController.dashboard);
 router.get('/sports', webAuthenticated, sportsController.sports);
