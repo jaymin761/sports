@@ -41,9 +41,9 @@
                         <th>Name</th>
                         <th>Icon</th>
                         <th>Status</th>
+                        <th>Actions</th>
                       </tr>
                     </thead>
-
                     <tbody>
                       <% for(let i=0; i < data.length; i++) { %>
                         <tr>
@@ -57,11 +57,23 @@
                           </td>
                           <td>
                             <%if(data[i].status==1){%>
-                             <span class="badge bg-danger">Enable</span>
+                             <span class="badge bg-success">Enable</span>
                             <%}else{%>
                                <span class="badge bg-danger">Disable</span>
                             <%}%>
-
+                          </td>
+                          <td>
+                            <%if(data[i].status==1){%>
+                    
+                             <button class='btn btn-sm btn-success sport-type-sts' data-status='0' data-id='<%= data[i]._id%>' title='Click to Disabled'><i class='fas fa-unlock'></i></button>
+                              <%}else{%>
+                    
+                             <button class='btn btn-sm btn-danger sport-type-sts' data-status='1' data-id='<%= data[i]._id%>' title='Click to Enabled'><i class='fas fa-lock'></i></button>
+                              <%}%>
+                    
+                            <button class='btn btn-sm btn-primary edit-sports'  data-info='<%= data[i]%>' data-id='<%= data[i]._id%>' title='Click to Edit'><i class="fas fa-edit" data-toggle="modal"
+                              data-target="#modal-default"></i></button>
+                            <button class='btn btn-sm btn-danger delete-sports' data-id='<%= data[i]._id%>' title='Click to Delete'><i class="fas fa-trash-alt"></i></button>
                           </td>
                         </tr>
                         <%}%>
@@ -138,22 +150,19 @@
               $(this).bootstrapSwitch('state', $(this).prop('checked'));
             })
 
-            $(function () {
-              $("#example1").DataTable({
-                "responsive": true, "lengthChange": false, "autoWidth": false,
-                "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
-              }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+            function showList(){
+            
               $('#example2').DataTable({
                 "paging": true,
                 "lengthChange": false,
                 "searching": false,
-                "ordering": true,
                 "info": true,
                 "autoWidth": false,
                 "responsive": true,
               });
-            });
-
+            };
+            showList()
+         
             function readURL(input) {
               if (input.files && input.files[0]) {
                 var reader = new FileReader();
@@ -170,6 +179,7 @@
                 reader.readAsDataURL(input.files[0]);
               }
             }
+
             jQuery.validator.addMethod("noSpace", function (value, element) {
               return value.indexOf(" ") < 0 && value != "";
             }, "No space please and don't leave it empty");
@@ -227,8 +237,10 @@
                       $("#modal-default").modal("hide");
                       $("#sport-save").attr('disabled', false);
                       $("#sport-form").trigger("reset");
-                      $("#example1").draw();
                       toastr.success(data.message);
+                        setTimeout(function() {
+                          location.reload()
+                        }, 1000);
                     } else {
                       $("#sport-save").attr('disabled', false);
                       // $(".fa-category").hide();
@@ -242,7 +254,89 @@
               }
 
             });
-          </script>
+
+            $(document).on("click", ".sport-type-sts", function () {
+              var id = $(this).data('id');
+              var status = $(this).data('status');
+              var sts = 'Active';
+              if (status == 0) {
+                  var sts = 'Inactive';
+              }
+              if (status == 3) {
+                  var sts = 'Reject';
+              }
+              var url = "<%= routeUrl %>sport-status";
+
+              Swal.fire({
+                  title: "Are you sure?",
+                  text: "Are you sure want to record " + sts + " ? ",
+                  icon: "warning",
+                  showCancelButton: true,
+                  confirmButtonClass: "btn-success",
+                  confirmButtonText: "Yes",
+                  cancelButtonText: "No",
+              }).then(function (result) {
+                  if (result.isConfirmed == true) {
+                      $.ajax({
+                          type: "POST",
+                          url: url,
+                          data: { id: id, status: status },
+                          dataType: "json",
+                          success: function (data) {
+                              if (data.message != '') {
+                                toastr.success(data.message);
+                                setTimeout(function() {
+                                  location.reload()
+                                }, 1000);
+                              }
+                          }
+                      });
+                  }
+              });
+          });
+            $(document).on("click", ".delete-sports", function () {
+                var id = $(this).data('id');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Are you sure want to delete this record ?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                }).then(function (result) {
+                    if (result.isConfirmed == true) {
+                        var url = "<%= routeUrl %>sport-delete";
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: { id: id},
+                            dataType: "json",
+                            success: function (json) {
+
+                                if (json.message != '') {
+                                  toastr.success(json.message);
+                                  setTimeout(function() {
+                                  location.reload()
+                                }, 1000);
+
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        
+            $(document).on("click", ".edit-sports", function () {
+              var id = $(this).data('id');
+            var info =  $(this).data('info')
+              info =JSON.stringify(info)
+              info=JSON.parse(info['name'])
+              console.log(info.name);
+              console.log(info);
+              $('#name').val(info.name)  
+            });
+        </script>
           </body>
 
           </html>
