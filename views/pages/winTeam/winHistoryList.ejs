@@ -1,0 +1,131 @@
+<%-include('../../partials/header.ejs') %>
+  <%-include('../../partials/sidebar.ejs') %>
+
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1><%= pageName %></h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                <li class="breadcrumb-item active"><%= pageName %></li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Name</th>
+                        <th>Icon</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                     
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <form name="sport-form" id="sport-form" method="post">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title"><Span class="div-class"></Span> Team</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                    <input type="hidden" name="id" id="sport_id">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">Icon</label>
+                    <div class="input-group">
+                      <input type="file" name="icon_image" id="icon_image" class="custom-file-input" id="icon-error"
+                        onchange="readURL(this)">
+                      <label class="custom-file-label" for="icon-error">Choose file</label>
+                      <div class="col-lg-3 p-1 m-2">
+                        <img src="<%= siteUrl %>assets/img/preview-img.png" id="show_preview" name="show_preview" class="w-100"
+                          alt="show perview">
+                      </div>
+                    </div>
+                  </div>
+                  <br />
+                  <div class="form-group status-remove">
+                    <label for="exampleInputFile" style="margin-right: 19px;">Enable/Desable </label>
+                    <input type="checkbox" value="1" id="status" name="status"  data-bootstrap-switch>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="sport-save">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>  
+
+      <%- include('../../partials/footer.ejs') %>
+        <%- include('../../partials/dataTableScript.ejs') %>
+        <script>
+          $(function(){
+
+              $("#start_date").datepicker({
+
+                  minDate: new Date()
+
+              });
+          });
+          function showList(){
+          
+            $('#example2').DataTable({
+              "paging": true,
+              "lengthChange": false,
+              "searching": true,
+              "info": true,
+              "autoWidth": false,
+              "responsive": true,
+            });
+          };
+          showList()
+       
+       
+
+
+          
+         
+
+       
+      </script>
+          </body>
+
+          </html>
