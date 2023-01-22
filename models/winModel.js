@@ -8,10 +8,10 @@ var winSchema = new Schema({
         require: false,
         default: null,
     },
-    tema_id: {
+    team_id: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        default: false
+        default: null
     },
 }, {
     collection: constants.winSchema,

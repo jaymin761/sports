@@ -25,7 +25,13 @@ var gameSchema = new Schema({
     },
     win_expect_id: {
         type: mongoose.Schema.Types.ObjectId,
-        default: null
+        require: false,
+        default: null,
+    },
+    win_status: {
+        type: Number,
+        require: false,
+        default: 0,
     },
     sport_id: {
         type: mongoose.Schema.Types.ObjectId,

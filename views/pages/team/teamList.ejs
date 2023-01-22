@@ -71,8 +71,8 @@
                              <button class='btn btn-sm btn-danger sport-type-sts' data-status='1' data-id='<%= data[i]._id%>' title='Click to Enabled'><i class='fas fa-lock'></i></button>
                               <%}%>
                     
-                            <button class='btn btn-sm btn-primary edit-sports' data-status='<%= data[i].status%>' data-icon='<%= data[i].icon%>' data-name='<%= data[i].name%>' data-id='<%= data[i]._id%>' title='Click to Edit'><i class="fas fa-edit" data-toggle="modal"
-                              data-target="#modal-default"></i></button>
+                            <button class='btn btn-sm btn-primary edit-sports' data-status='<%= data[i].status%>' data-icon='<%= data[i].icon%>' data-toggle="modal"
+                              data-target="#modal-default" data-name='<%= data[i].name%>' data-id='<%= data[i]._id%>' title='Click to Edit'><i class="fas fa-edit" ></i></button>
                             <button class='btn btn-sm btn-danger delete-sports' data-id='<%= data[i]._id%>' title='Click to Delete'><i class="fas fa-trash-alt"></i></button>
                           </td>
                         </tr>

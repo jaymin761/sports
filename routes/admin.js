@@ -6,6 +6,7 @@ const dashboardController = require('../controllers/admin/dashboardController');
 const sportsController = require('../controllers/admin/sportsController');
 const teamsController = require('../controllers/admin/teamsController');
 const gameController = require('../controllers/admin/gameController');
+const winController = require('../controllers/admin/winController');
 var router = express.Router();
 
 
@@ -51,8 +52,14 @@ router.post('/team-get', webAuthenticated, gameController.teamGet);
 router.post('/team-get-expet', webAuthenticated, gameController.teamGetExpet);
 router.post('/game-create', webAuthenticated, gameController.gameCreate);
 router.post('/game-edit', webAuthenticated, gameController.gameEdit);
+router.post('/game-update', webAuthenticated, gameController.gameupdate);
+router.post('/game-win', webAuthenticated, gameController.gameWin);
+router.post('/game-win-save', webAuthenticated, gameController.gameWinSave);
+router.post('/game-delete', webAuthenticated, gameController.gameDelete);
 
 
+//win game
+router.get('/wingame', webAuthenticated, winController.winGame);
 
 
 module.exports = router;

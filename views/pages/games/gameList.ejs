@@ -26,7 +26,7 @@
             <div class="col-12">
               <div class="card">
                 <div class="card-header">
-                  <button type="button" id="add-sports" class="btn btn-primary" data-toggle="modal"
+                  <button type="button" id="add-game" class="btn btn-primary" data-toggle="modal"
                     data-target="#modal-default">
                      Add Games
                   </button>
@@ -41,9 +41,11 @@
                         <th>Game Name</th>
                         <th>Team One</th>
                         <th>Team two</th>
+                        <th>Expect Team</th>
                         <th>Place</th>
                         <th>Start Date</th>
                         <th>Sport</th>
+                        <th>Winner Announce</th>
                         <th>Actions</th>
                       </tr>
                     </thead>
@@ -63,6 +65,9 @@
                             <%= data[i].team_two%>
                           </td>
                           <td>
+                            <%= data[i].expect_team%>
+                          </td>
+                          <td>
                             <%= data[i].place%>
                           </td>
                           <td>
@@ -72,9 +77,25 @@
                             <%= data[i].sports%>
                           </td>
                           <td>
-                            <button class='btn btn-sm btn-primary edit-game' data-id='<%= data[i]._id %>' title='Click to Edit'><i class="fas fa-edit" data-toggle="modal"
-                              data-target="#modal-default"></i></button>
-                            <button class='btn btn-sm btn-danger delete-sports' data-id='<%= data[i]._id%>' title='Click to Delete'><i class="fas fa-trash-alt"></i></button>
+                            <%if(data[i].win_status==1){%>
+                             <span class="badge bg-success">Yes</span>
+                            <%}else{%>
+                               <span class="badge bg-danger">No</span>
+                            <%}%>
+                          </td>
+                          <td>
+                            <%if(data[i].win_status==0){%>
+                            <button class='btn btn-sm btn-primary win-game' data-id='<%= data[i]._id %>' title='Click to Edit' data-toggle="modal"
+                              data-target="#modal-win-default">
+                              <i class="fa fa-trophy" aria-hidden="true"></i>
+
+                            </i></button>
+                            <%}%>
+
+                            <button data-toggle="modal" data-target="#modal-default" class='btn btn-sm btn-primary edit-game' data-id='<%= data[i]._id %>' title='Click to Edit'>
+                              <i class="fas fa-edit"></i></button>
+                            <button class='btn btn-sm btn-danger delete-game' data-id='<%= data[i]._id%>' title='Click to Delete'>
+                              <i class="fas fa-trash-alt"></i></button>
                           </td>
                         </tr>
                         <%}%>
@@ -152,11 +173,52 @@
           </form>
         </div>
       </div>
+
+      <div class="modal fade" id="modal-win-default">
+        <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title"><Span class="div-class"></Span> Winner Announce</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Winner Team </label>
+                    <select name="win_team" id="win_team" class="form-control">
+                      <option value="">Select Win Team</option>
+                  </select>
+                  <input type="hidden" name="id" id="game_winner_id">
+                  </div>
+                  <br />
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="win-save">Save</button>
+              </div>
+            </div>
+        </div>
+      </div>
     </div>  
 
       <%- include('../../partials/footer.ejs') %>
         <%- include('../../partials/dataTableScript.ejs') %>
           <script>
+
+            $(document).on('click', '#add-game', function () {
+              $("#game-form").trigger("reset");
+              var validator = $('#game-form').validate();
+              validator.resetForm();
+               $('.div-class').html('Create');
+              $('.form-control').removeClass('is-invalid')
+              $('#game_id').val('')
+              $('#team_ex').html("<option value=''>Select Team</option>")
+              $('#team_two').html("<option value=''>Select Team</option>")
+
+            })
             $(function(){
 
                 $("#start_date").datepicker({
@@ -181,6 +243,7 @@
             $(document).on('change','#team_one',function(){
                let team_id = $(this).val()
                $('#team_ex').html("<option value=''>Select Team</option>")
+               $('#team_two').html("<option value=''>Select Team</option>")
                var url = "<%= routeUrl %>team-get";
               if(team_id){
                 
@@ -210,6 +273,8 @@
                array.push(team_id1);
                array.push(team_id2);
                var url = "<%= routeUrl %>team-get-expet";
+               if(array.length>0){
+
                $.ajax({
                   type: "POST",
                   url: url,
@@ -229,6 +294,8 @@
                     }
                   }
                 });
+               }
+
             });
 
             jQuery.validator.addMethod("noSpace", function (value, element) {
@@ -300,6 +367,9 @@
                 $("#game-save").attr('disabled', 'disabled');
 
                 var url = "<%= routeUrl %>game-create";
+                if($('#game_id').val()){
+                      url = "<%= routeUrl %>game-update";
+                }
 
                 $.ajax({
                   type: "POST",
@@ -327,9 +397,14 @@
             
             $(document).on("click", ".edit-game", function () {
  
+              var validator = $('#game-form').validate();
+              validator.resetForm();
+              $('.div-class').html('Edit');
+              $('.form-control').removeClass('is-invalid')
               var url = "<%= routeUrl %>game-edit";
 
               var id = $(this).data('id');
+              $('#game_id').val(id)
               $.ajax({
                   type: "POST",
                   url: url,
@@ -352,6 +427,86 @@
                     },200);
 
                   }
+                });
+            });
+            $(document).on('click','.win-game',function(){
+             
+              var url = "<%= routeUrl %>game-win";
+
+              var id = $(this).data('id');
+
+              $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: {
+                    id:id,
+                  },
+                  dataType: "json",
+                  success: function (data) {
+                      $('#game_winner_id').val(data.data._id)
+                      var selectOpion=""
+                      selectOpion+="<option value='"+data.data.team_one_id+"'>"+data.data.team_one+"</option>"
+                      selectOpion+="<option value='"+data.data.team_two_id+"'>"+data.data.team_two+"</option>"
+                      $('#win_team').html(selectOpion)
+                  }
+                });
+            })
+
+            $(document).on('click','#win-save',function(){
+             
+             var url = "<%= routeUrl %>game-win-save";
+
+             var id = $('#game_winner_id').val()
+             var win_team_id = $('#win_team').val();
+
+             $.ajax({
+                 type: "POST",
+                 url: url,
+                 data: {id:id,
+                  win_team_id:win_team_id
+                },
+                 dataType: "json",
+                 success: function (data) {
+                  if (data.data.status == 1) {
+                     $("#modal-win-default").modal("hide");
+                      toastr.success(data.message);
+                      setTimeout(function() {
+                          location.reload()
+                        }, 1000);
+                  }
+                 }
+               });
+           })
+           $(document).on("click", ".delete-game", function () {
+                var id = $(this).data('id');
+                Swal.fire({
+                    title: "Are you sure?",
+                    text: "Are you sure want to delete this record ?",
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonClass: "btn-success",
+                    confirmButtonText: "Yes",
+                    cancelButtonText: "No",
+                }).then(function (result) {
+                    if (result.isConfirmed == true) {
+                        var url = "<%= routeUrl %>game-delete";
+                        $.ajax({
+                            type: "POST",
+                            url: url,
+                            data: { id: id},
+                            dataType: "json",
+                            success: function (json) {
+
+                                if (json.message != '') {
+                                  toastr.success(json.message);
+                                  setTimeout(function() {
+                                  location.reload()
+                                }, 1000);
+
+                                }
+                            }
+                        });
+                    }
                 });
             });
         </script>
