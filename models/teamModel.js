@@ -16,7 +16,7 @@ var teamSchema = new Schema({
     status: {
         type: Number,
         require: false,
-        default: null,
+        default: 1,
     },
     deletedStatus: {
         type: Number,

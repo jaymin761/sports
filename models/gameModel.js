@@ -5,13 +5,13 @@ var Schema = mongoose.Schema;
 var gameSchema = new Schema({
     name: {
         type: String,
-        require: true,
         min: 6,
-        max: 255
+        max: 255,
+        default: null,
     },
     place: {
         type: String,
-        require: true,
+        default: null,
     },
     team1_id: {
         type: mongoose.Schema.Types.ObjectId,
@@ -23,29 +23,20 @@ var gameSchema = new Schema({
         required: true,
         default: false
     },
+    win_expect_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        default: null
+    },
     sport_id: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        default: false
+        default: null
     },
     start_date: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        default: false
-    },
-    end_date: {
-        type: mongoose.Schema.Types.ObjectId,
-        required: true,
-        default: false
-    },    
-    win_status: {
-        type: Number,
-        required: true,
-        default: false
+        type: Date,
+        default: null
     },
     deletedStatus: {
         type: Number,
-        required: true,
         default: false
     },
 }, {
