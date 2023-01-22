@@ -1,0 +1,360 @@
+<%-include('../../partials/header.ejs') %>
+  <%-include('../../partials/sidebar.ejs') %>
+
+    <div class="content-wrapper">
+      <!-- Content Header (Page header) -->
+      <section class="content-header">
+        <div class="container-fluid">
+          <div class="row mb-2">
+            <div class="col-sm-6">
+              <h1>Games</h1>
+            </div>
+            <div class="col-sm-6">
+              <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="/dashboard">Home</a></li>
+                <li class="breadcrumb-item active">Games</li>
+              </ol>
+            </div>
+          </div>
+        </div><!-- /.container-fluid -->
+      </section>
+
+      <!-- Main content -->
+      <section class="content">
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <button type="button" id="add-sports" class="btn btn-primary" data-toggle="modal"
+                    data-target="#modal-default">
+                     Add Games
+                  </button>
+                  <!-- <h3 class="card-title">DataTable with minimal features & hover style</h3> -->
+                </div>
+                <!-- /.card-header -->
+                <div class="card-body">
+                  <table id="example2" class="table table-bordered table-hover">
+                    <thead>
+                      <tr>
+                        <th>Id</th>
+                        <th>Game Name</th>
+                        <th>Team One</th>
+                        <th>Team two</th>
+                        <th>Place</th>
+                        <th>Start Date</th>
+                        <th>Sport</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <% for(let i=0; i < data.length; i++) { %>
+                        <tr>
+                          <td>
+                            <%= i+1%>
+                          </td>
+                          <td>
+                            <%= data[i].name%>
+                          </td>
+                          <td>
+                            <%= data[i].team_one%>
+                          </td>
+                          <td>
+                            <%= data[i].team_two%>
+                          </td>
+                          <td>
+                            <%= data[i].place%>
+                          </td>
+                          <td>
+                            <%= data[i].start_date.toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})%>
+                          </td>
+                          <td>
+                            <%= data[i].sports%>
+                          </td>
+                          <td>
+                            <button class='btn btn-sm btn-primary edit-game' data-id='<%= data[i]._id %>' title='Click to Edit'><i class="fas fa-edit" data-toggle="modal"
+                              data-target="#modal-default"></i></button>
+                            <button class='btn btn-sm btn-danger delete-sports' data-id='<%= data[i]._id%>' title='Click to Delete'><i class="fas fa-trash-alt"></i></button>
+                          </td>
+                        </tr>
+                        <%}%>
+                    </tbody>
+                  </table>
+                </div>
+                <!-- /.card-body -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <div class="modal fade" id="modal-default">
+        <div class="modal-dialog">
+          <form name="game-form" id="game-form" method="post">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h4 class="modal-title"><Span class="div-class"></Span> Games</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="card-body">
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Name</label>
+                    <input type="text" name="name" class="form-control" id="name" placeholder="Enter name">
+                    <input type="hidden" name="id" id="game_id">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Place</label>
+                    <textarea name="place" class="form-control" id="place" placeholder="Enter place"></textarea>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Start Data</label>
+                    <input type="text" name="start_date" class="form-control" id="start_date" placeholder="Enter start date">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Select Team One</label>
+                    <select name="team_one" id="team_one" class="form-control">
+                        <option value="">Select Team</option>
+                        <% for(let i=0; i < team.length; i++) { %>
+                            <option value="<%=team[i]._id%>"><%=team[i].name%></option>
+                          <% } %>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Select Team two</label>
+                    <select name="team_two" id="team_two" class="form-control">
+                        <option value="">Select Team</option>
+                    </select>  
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Expect to win</label>
+                    <select name="team_ex" id="team_ex" class="form-control">
+                        <option value="">Select Team</option>
+                    </select>  
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Select Sports</label>
+                    <select name="sport" id="sport" class="form-control">
+                        <option value="">Select sports</option>
+                        <% for(let i=0; i < sport.length; i++) { %>
+                            <option value="<%=sport[i]._id%>"><%=sport[i].name%></option>
+                          <% } %>
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" id="game-save">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>  
+
+      <%- include('../../partials/footer.ejs') %>
+        <%- include('../../partials/dataTableScript.ejs') %>
+          <script>
+            $(function(){
+
+                $("#start_date").datepicker({
+
+                    minDate: new Date()
+
+                });
+            });
+            function showList(){
+            
+              $('#example2').DataTable({
+                "paging": true,
+                "lengthChange": false,
+                "searching": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+              });
+            };
+            showList()
+         
+            $(document).on('change','#team_one',function(){
+               let team_id = $(this).val()
+               $('#team_ex').html("<option value=''>Select Team</option>")
+               var url = "<%= routeUrl %>team-get";
+              if(team_id){
+                
+               $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: {team_id:team_id},
+                  dataType: "json",
+                  success: function (data) {
+
+                    var selectOpion = ""
+                    if(data.data.teamList.length>0){
+                      selectOpion+="<option value=''>Select Team</option>"
+                      data.data.teamList.forEach(element => {
+                          selectOpion+="<option value='"+element._id+"'>"+element.name+"</option>"
+                      });
+                      $('#team_two').html(selectOpion)
+                    }
+                  }
+                });
+              }
+            });
+            $(document).on('change','#team_two',function(){
+               let team_id1 = $("#team_one").val()
+               let team_id2 = $("#team_two").val()
+               array = [];
+               array.push(team_id1);
+               array.push(team_id2);
+               var url = "<%= routeUrl %>team-get-expet";
+               $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: {
+                    teams:array,
+                  },
+                  dataType: "json",
+                  success: function (data) {
+
+                    var selectOpion = ""
+                    if(data.data.teamList.length>0){
+                      selectOpion+="<option value=''>Select Team</option>"
+                      data.data.teamList.forEach(element => {
+                          selectOpion+="<option value='"+element._id+"'>"+element.name+"</option>"
+                      });
+                      $('#team_ex').html(selectOpion)
+                    }
+                  }
+                });
+            });
+
+            jQuery.validator.addMethod("noSpace", function (value, element) {
+              // return value.indexOf(" ") < 0 && value != "";
+              return value == '' || value.trim().length != 0;  
+            }, "No space please and don't leave it empty");
+
+            $("#game-form").validate({
+              rules: {
+                name: {
+                  required: true,
+                  noSpace: true
+                },
+                place: {
+                  required: true,
+                  noSpace: true
+                },
+                start_date: {
+                  required: true,
+                  noSpace: true
+                },
+                team_one: {
+                  required: true,
+                },
+                team_two: {
+                  required: true,
+                },
+                sport: {
+                  required: true,
+                },
+               
+              },
+
+              messages: {
+                name: {
+                  required: "Please Enter Name"
+                },
+                place: {
+                  required: "Please Enter Place"
+                },
+                start_date: {
+                  required: "Please Enter Start Date"
+                },
+                team_one: {
+                  required: "Please Enter Team One"
+                },
+                team_two: {
+                  required: "Please Enter Team two"
+                },
+                sport: {
+                  required: "Please Enter sport"
+                },
+              },
+              errorElement: 'span',
+              errorPlacement: function (error, element) {
+                error.addClass('invalid-feedback');
+                element.parent().append(error);
+              },
+              highlight: function (element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+              },
+              unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+              },
+
+              submitHandler: function (form) {
+
+                $(".fa-category").show();
+                $("#game-save").attr('disabled', 'disabled');
+
+                var url = "<%= routeUrl %>game-create";
+
+                $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: $("#game-form").serialize(),
+                  dataType: "json",
+                  success: function (data) {
+                    if (data.data.status == 1) {
+                      $("#modal-default").modal("hide");
+                      $("#game-save").attr('disabled', false);
+                      $("#game-form").trigger("reset");
+                      toastr.success(data.message);
+                        setTimeout(function() {
+                          location.reload()
+                        }, 1000);
+                    } else {
+                      $("#game-save").attr('disabled', false);
+                      toastr.error(data.message);
+                    }
+                  }
+                });
+                return false;
+              }
+            });
+            
+            $(document).on("click", ".edit-game", function () {
+ 
+              var url = "<%= routeUrl %>game-edit";
+
+              var id = $(this).data('id');
+              $.ajax({
+                  type: "POST",
+                  url: url,
+                  data: {id:id},
+                  dataType: "json",
+                  success: function (data) {
+                    $('#name').val(data.data.teamList.name);
+                    $('#place').val(data.data.teamList.place);
+                    $('#start_date').val(moment(data.data.teamList.start_date,'YYYY-MM-DD hh:mm a').format('MM/DD/yyyy'));
+                    $('#team_one').val(data.data.teamList.team1_id)
+                    $('#sport').val(data.data.teamList.sport_id)
+                    $('#team_one').trigger('change')
+                    setTimeout(function() {
+                      $('#team_two').val(data.data.teamList.team2_id)
+                     $('#team_two').trigger('change')
+                    }, 100);
+                    setTimeout(function() {
+                      $('#team_ex').val(data.data.teamList.win_expect_id)
+                    
+                    },200);
+
+                  }
+                });
+            });
+        </script>
+          </body>
+
+          </html>
