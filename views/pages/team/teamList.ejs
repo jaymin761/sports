@@ -110,7 +110,7 @@
                         onchange="readURL(this)">
                       <label class="custom-file-label" for="icon-error">Choose file</label>
                       <div class="col-lg-3 p-1 m-2">
-                        <img src="/assets/img/preview-img.png" id="show_preview" name="show_preview" class="w-100"
+                        <img src="<%= siteUrl %>assets/img/preview-img.png" id="show_preview" name="show_preview" class="w-100"
                           alt="show perview">
                       </div>
                     </div>
@@ -135,10 +135,15 @@
       <%- include('../../partials/footer.ejs') %>
         <%- include('../../partials/dataTableScript.ejs') %>
           <script>
-
+            
             $(document).on('click', '#add-sports', function () {
               $("#sport-form").trigger("reset");
-
+              $('.custom-file-label').html("Choose file");
+              $('#icon_image').on('change',function(){
+                  var fileName = $(this).val();
+                  fileName = $(this).val().split("\\").pop();
+                  $(this).next('.custom-file-label').html(fileName);
+              });
               var validator = $('#sport-form').validate();
               validator.resetForm();
                $('.div-class').html('Create');
@@ -342,6 +347,12 @@
         
             $(document).on("click", ".edit-sports", function () {
               var validator = $('#sport-form').validate();
+              $('.custom-file-label').html("Choose file");
+              $('#icon_image').on('change',function(){
+                  var fileName = $(this).val();
+                  fileName = $(this).val().split("\\").pop();
+                  $(this).next('.custom-file-label').html(fileName);
+              });
               validator.resetForm();
               $('.div-class').html('Edit');
               $('.form-control').removeClass('is-invalid')

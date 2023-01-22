@@ -138,7 +138,12 @@
 
             $(document).on('click', '#add-sports', function () {
               $("#sport-form").trigger("reset");
-
+              $('.custom-file-label').html("Choose file");
+              $('#icon_image').on('change',function(){
+                  var fileName = $(this).val();
+                  fileName = $(this).val().split("\\").pop();
+                  $(this).next('.custom-file-label').html(fileName);
+              });
               var validator = $('#sport-form').validate();
               validator.resetForm();
                $('.div-class').html('Create');
@@ -342,6 +347,12 @@
         
             $(document).on("click", ".edit-sports", function () {
               var validator = $('#sport-form').validate();
+              $('.custom-file-label').html("Choose file");
+              $('#icon_image').on('change',function(){
+                  var fileName = $(this).val();
+                  fileName = $(this).val().split("\\").pop();
+                  $(this).next('.custom-file-label').html(fileName);
+              });
               validator.resetForm();
               $('.div-class').html('Edit');
               $('.form-control').removeClass('is-invalid')
