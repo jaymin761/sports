@@ -30,8 +30,8 @@ const sportsController = {
         options.customQuery = {
             deletedStatus: 0,
           };
-          MongoClient.connect('mongodb://localhost', function(err, client) {
-            new MongoDataTable(client.db('sports')).get('sports', options, function(err, result) {
+          MongoClient.connect(process.env.DATABASE_BASE_URL, function(err, client) {
+            new MongoDataTable(client.db(process.env.DATABASE)).get(constants.sportSchema, options, function(err, result) {
               if (err) {
                 // handle the error
             return;

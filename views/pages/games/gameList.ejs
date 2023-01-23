@@ -50,55 +50,6 @@
                       </tr>
                     </thead>
                     <tbody>
-                      <% for(let i=0; i < data.length; i++) { %>
-                        <tr>
-                          <td>
-                            <%= i+1%>
-                          </td>
-                          <td>
-                            <%= data[i].name%>
-                          </td>
-                          <td>
-                            <%= data[i].team_one%>
-                          </td>
-                          <td>
-                            <%= data[i].team_two%>
-                          </td>
-                          <td>
-                            <%= data[i].expect_team%>
-                          </td>
-                          <td>
-                            <%= data[i].place%>
-                          </td>
-                          <td>
-                            <%= data[i].start_date.toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"})%>
-                          </td>
-                          <td>
-                            <%= data[i].sports%>
-                          </td>
-                          <td>
-                            <%if(data[i].win_status==1){%>
-                             <span class="badge bg-success">Yes</span>
-                            <%}else{%>
-                               <span class="badge bg-danger">No</span>
-                            <%}%>
-                          </td>
-                          <td>
-                            <%if(data[i].win_status==0){%>
-                            <button class='btn btn-sm btn-primary win-game' data-id='<%= data[i]._id %>' title='Click to Edit' data-toggle="modal"
-                              data-target="#modal-win-default">
-                              <i class="fa fa-trophy" aria-hidden="true"></i>
-
-                            </i></button>
-                            <%}%>
-
-                            <button data-toggle="modal" data-target="#modal-default" class='btn btn-sm btn-primary edit-game' data-id='<%= data[i]._id %>' title='Click to Edit'>
-                              <i class="fas fa-edit"></i></button>
-                            <button class='btn btn-sm btn-danger delete-game' data-id='<%= data[i]._id%>' title='Click to Delete'>
-                              <i class="fas fa-trash-alt"></i></button>
-                          </td>
-                        </tr>
-                        <%}%>
                     </tbody>
                   </table>
                 </div>
@@ -229,14 +180,37 @@
             });
             function showList(){
             
-              $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
-              });
+              var url = "<%= routeUrl %>game-listing";
+                var t = $('#example2').DataTable({
+                  "processing": true,
+                "serverSide": true,
+                "aaSorting": [[0, "desc"]],
+                "pageLength": 10,
+                "dom": '<"pull-left"f><"pull-right"l>tip',
+                "scrollX": false,
+                    'ajax': {
+                        'type': 'GET',
+                        'url': url,
+                        error: function () {
+                        $(".users-error").html("");
+                        $("#users").append('<tbody class="users-error"><tr><th colspan="3">No data found </th></tr></tbody>');
+                        $("#users_processing").css("display", "none");
+                    }
+                    },
+                    "drawCallback": function (settings) {
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                "aoColumns": [
+                    { data: '_id', "sWidth": "3%", orderable: false },
+                    { data: 'name', "sWidth": "10%" },
+                    { data: 'place', "sWidth": "10%" },
+                    { data: 'team1_id', "sWidth": "10%" },
+                    { data: 'team2_id', "sWidth": "5%", orderable: false },
+                    { data: 'sport_id', "sWidth": "5%", orderable: false },
+                    { data: 'win_expect_id', "sWidth": "5%", orderable: false },
+                    { data: 'start_date', "sWidth": "5%", orderable: false },
+                ]
+                    });
             };
             showList()
          
