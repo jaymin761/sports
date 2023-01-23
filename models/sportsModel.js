@@ -1,6 +1,7 @@
 var constants = require('./modelConstants');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var dataTables = require('mongoose-datatables')
 
 var sportSchema = new Schema({
     name: {
@@ -31,5 +32,7 @@ var sportSchema = new Schema({
     toObject: { virtuals: true, getters: true },
     toJSON: { virtuals: true, getters: true }
 });
+sportSchema.plugin(dataTables)
+
 
 mongoose.model(constants.sportSchema, sportSchema);

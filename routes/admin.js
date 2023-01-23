@@ -39,6 +39,7 @@ router.get('/sports', webAuthenticated, sportsController.sports);
 router.post('/sport-create', webAuthenticated, sportsController.sportCreate);
 router.post('/sport-delete', webAuthenticated, sportsController.sportDelete);
 router.post('/sport-status', webAuthenticated, sportsController.sportStatus);
+router.get('/sport-listing', webAuthenticated, sportsController.sportListing);
 
 // team 
 router.get('/team', webAuthenticated, teamsController.teams);
