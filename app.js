@@ -91,6 +91,7 @@ app.use(async function(req, res, next) {
 });
 
 app.use('/admin', require('./routes/admin'));
+app.use('/user', require('./routes/user'));
 // app.use('/api', require('./routes/api'));
 app.use('/', require('./routes/admin'));
 app.get('*', function(req, res, next) {

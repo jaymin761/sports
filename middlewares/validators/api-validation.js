@@ -1,4 +1,4 @@
-const validator = require('../../helpers/api_validate.js');
+const validator = require('./validate');
 
 
 const check = (req, res, next) => {
@@ -29,28 +29,29 @@ const check = (req, res, next) => {
         }
     });
 }
-const signup = (req, res, next) => {
+const register = (req, res, next) => {
 
+  
     validationRule = {
-        "username": "required",
-        // "email": "email",
-        "password": "required",
-        "device_type": "required",
-        "device_token": "required"
+        "mobile": "required|exist:users,mobile",
+        "password": "required|min:4|max:50",
+        "deviceToken": "required",
+        "deviceType": "required"
     }
 
-    validator(req.body, validationRule, {}, (err, status) => {
-        if (!status) {
-            res.status(412)
-                .send({
-                    success: false,
-                    message: 'Validation failed',
-                    data: err
-                });
-        } else {
-            next();
-        }
-    });
+    validator.validatorUtilWithCallback(validationRule, {}, req, res, next);
+}
+const login = (req, res, next) => {
+
+  
+    validationRule = {
+        "mobile": "required",
+        "password": "required",
+        "deviceToken": "required",
+        "deviceType": "required"
+    }
+
+    validator.validatorUtilWithCallback(validationRule, {}, req, res, next);
 }
 
 const signin = (req, res, next) => {
@@ -643,7 +644,8 @@ function check_single_image(image) {
 }
 module.exports = {
     check,
-    signup,
+    register,
+    login,
     verifyOtp,
     resendOtp,
     forgotPassword,
