@@ -52,7 +52,7 @@ const sportsController = {
                     }else{
                         action +="<button class='btn btn-sm btn-danger sport-type-sts' data-status='1' data-id='"+result.data[i]['_id']+"' title='Click to Enabled'><i class='fas fa-lock'></i></button>"
                     }
-                    action+=' <button data-toggle="modal" data-target="#modal-default" class="btn btn-sm btn-primary edit-sports" data-status="'+result.data[i]['status']+'" data-icon="'+result.data[i]['icon']+'" data-name="'+result.data[i]['name']+'" data-id="'+result.data[i]['_id']+'" title="Click to Edit"><i class="fas fa-edit" ></i></button><button class="btn btn-sm btn-danger delete-sports" data-id="'+result.data[i]['_id']+'" title="Click to Delete"><i class="fas fa-trash-alt"></i></button>'
+                    action+=' <button data-toggle="modal" data-target="#modal-default" class="btn btn-sm btn-primary edit-sports" data-status="'+result.data[i]['status']+'" data-icon="'+result.data[i]['icon']+'" data-name="'+result.data[i]['name']+'" data-id="'+result.data[i]['_id']+'" title="Click to Edit"><i class="fas fa-edit" ></i></button> <button class="btn btn-sm btn-danger delete-sports" data-id="'+result.data[i]['_id']+'" title="Click to Delete"><i class="fas fa-trash-alt"></i></button>'
                     
                    var img = "<img src='" + process.env.WEBURL + 'images/' + result.data[i]['icon'] + "' style='height:50px;width:50px;'/>";
                     

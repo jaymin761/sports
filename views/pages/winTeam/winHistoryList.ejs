@@ -30,11 +30,11 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Id</th>
+                        <th>No</th>
                         <th>Name</th>
-                        <th>Icon</th>
-                        <th>Status</th>
-                        <th>Actions</th>
+                        <th>Win Team</th>
+                        <th>Team One</th>
+                        <th>Team Two</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -106,15 +106,36 @@
               });
           });
           function showList(){
-          
-            $('#example2').DataTable({
-              "paging": true,
-              "lengthChange": false,
-              "searching": true,
-              "info": true,
-              "autoWidth": false,
-              "responsive": true,
-            });
+            var url = "<%= routeUrl %>wingame-listing";
+                var t = $('#example2').DataTable({
+                  "processing": true,
+                  "serverSide": true,
+                  "aaSorting": [[0, "desc"]],
+                  "pageLength": 10,
+                  "dom": '<"pull-left"f><"pull-right"l>tip',
+                  "scrollX": false,
+                  'ajax': {
+                      'type': 'GET',
+                      'url': url,
+                      error: function () {
+                        $(".users-error").html("");
+                        $("#users").append('<tbody class="users-error"><tr><th colspan="3">No data found </th></tr></tbody>');
+                        $("#users_processing").css("display", "none");
+                    }
+                  },
+                    "drawCallback": function (settings) {
+                    $('[data-toggle="tooltip"]').tooltip();
+                },
+                "aoColumns": [
+                    { data: '_id'},
+                    { data: 'game_id' },
+                    { data: 'team_id'},
+                    { data: 'team_one'},
+                    { data: 'team_two' },
+                    // { data: 'status', "sWidth": "5%", orderable: false },
+                    // { data: 'createAt', "sWidth": "5%", orderable: false },
+                ]
+                    });
           };
           showList()
        

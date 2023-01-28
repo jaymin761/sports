@@ -63,6 +63,7 @@ router.post('/game-delete', webAuthenticated, gameController.gameDelete);
 
 //win game
 router.get('/wingame', webAuthenticated, winController.winGame);
+router.get('/wingame-listing', webAuthenticated, winController.winGameListing);
 
 
 module.exports = router;

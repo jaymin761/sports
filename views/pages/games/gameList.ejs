@@ -37,7 +37,7 @@
                   <table id="example2" class="table table-bordered table-hover">
                     <thead>
                       <tr>
-                        <th>Id</th>
+                        <th>No</th>
                         <th>Game Name</th>
                         <th>Team One</th>
                         <th>Team two</th>
@@ -201,14 +201,16 @@
                     $('[data-toggle="tooltip"]').tooltip();
                 },
                 "aoColumns": [
-                    { data: '_id', "sWidth": "3%", orderable: false },
-                    { data: 'name', "sWidth": "10%" },
-                    { data: 'place', "sWidth": "10%" },
-                    { data: 'team1_id', "sWidth": "10%" },
-                    { data: 'team2_id', "sWidth": "5%", orderable: false },
-                    { data: 'sport_id', "sWidth": "5%", orderable: false },
-                    { data: 'win_expect_id', "sWidth": "5%", orderable: false },
-                    { data: 'start_date', "sWidth": "5%", orderable: false },
+                    { data: '_id' },
+                    { data: 'name' },
+                    { data: 'team1_id' },
+                    { data: 'team2_id'},
+                    { data: 'win_expect_id' },
+                    { data: 'place' },
+                    { data: 'start_date' },
+                    { data: 'sport_id' },
+                    { data: 'win_status' },
+                    { data: 'createAt', "sWidth": "10%", orderable: false },
                 ]
                     });
             };
@@ -352,13 +354,14 @@
                   dataType: "json",
                   success: function (data) {
                     if (data.data.status == 1) {
+                      $("#example2").DataTable().ajax.reload();
                       $("#modal-default").modal("hide");
                       $("#game-save").attr('disabled', false);
                       $("#game-form").trigger("reset");
                       toastr.success(data.message);
-                        setTimeout(function() {
-                          location.reload()
-                        }, 1000);
+                        // setTimeout(function() {
+                        //   location.reload()
+                        // }, 1000);
                     } else {
                       $("#game-save").attr('disabled', false);
                       toastr.error(data.message);
@@ -442,11 +445,12 @@
                  dataType: "json",
                  success: function (data) {
                   if (data.data.status == 1) {
-                     $("#modal-win-default").modal("hide");
-                      toastr.success(data.message);
-                      setTimeout(function() {
-                          location.reload()
-                        }, 1000);
+                    $("#example2").DataTable().ajax.reload();
+                    $("#modal-win-default").modal("hide");
+                    toastr.success(data.message);
+                      // setTimeout(function() {
+                      //     location.reload()
+                      //   }, 1000);
                   }
                  }
                });
@@ -472,10 +476,11 @@
                             success: function (json) {
 
                                 if (json.message != '') {
+                                  $("#example2").DataTable().ajax.reload();
                                   toastr.success(json.message);
-                                  setTimeout(function() {
-                                  location.reload()
-                                }, 1000);
+                                //   setTimeout(function() {
+                                //   location.reload()
+                                // }, 1000);
 
                                 }
                             }

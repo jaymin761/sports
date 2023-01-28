@@ -164,16 +164,18 @@ const gameController = {
                     var team_one = await teamModel.findOne({"_id": mongoose.Types.ObjectId(result.data[i].team1_id)});
                     var team_two = await teamModel.findOne({"_id": mongoose.Types.ObjectId(result.data[i].team2_id)});
                     var win_expect_team = await teamModel.findOne({"_id": mongoose.Types.ObjectId(result.data[i].win_expect_id)});
+                    console.log(win_expect_team.name);
                     var sports = await sportModel.findOne({"_id": mongoose.Types.ObjectId(result.data[i].sport_id)});
 
                     var action = "";
                     if(result.data[i]['win_status']==1){
-                        var status = '<label class="badge badge-success">Active</label>';
+                        var status = '<label class="badge badge-success">Yes</label>';
+                        var action =   "<button data-toggle='modal' data-target='#modal-default' class='btn btn-sm btn-primary edit-game' data-id='" +result.data[i]['_id']+"'title='Click to Edit'><i class='fas fa-edit'></i></button> <button class='btn btn-sm btn-danger delete-game' data-id='"+result.data[i]['_id']+ "'title='Click to Delete'><i class='fas fa-trash-alt'></i></button>";
                     }else{
-                        var status = '<label class="badge badge-danger">Inctive</label>';
+                        var status = '<label class="badge badge-danger">No</label>';
+                        var action =  "<button class='btn btn-sm btn-danger win-game' data-id='"+result.data[i]['_id']+"' title='Click to Edit' data-toggle='modal' data-target='#modal-win-default'><i class='fa fa-trophy' aria-hidden='true'></i></i></button> <button data-toggle='modal' data-target='#modal-default' class='btn btn-sm btn-primary edit-game' data-id='" +result.data[i]['_id']+"'title='Click to Edit'><i class='fas fa-edit'></i></button> <button class='btn btn-sm btn-danger delete-game' data-id='"+result.data[i]['_id']+ "'title='Click to Delete'><i class='fas fa-trash-alt'></i></button>";
                     }
                     
-                    action +=  "<button data-toggle='modal' data-target='#modal-default' class='btn btn-sm btn-primary edit-game' data-id='" +result.data[i]['_id']+"'title='Click to Edit'><i class='fas fa-edit'></i></button> <button class='btn btn-sm btn-danger delete-game' data-id='"+result.data[i]['_id']+ "'title='Click to Delete'><i class='fas fa-trash-alt'></i></button>";
 
                     result.data[i]['_id'] = i + 1;
                     result.data[i]['team1_id'] = team_one.name;
@@ -186,7 +188,7 @@ const gameController = {
 
 
                 }
-                console.log(result);
+                // console.log(result);
               res.send(result);
             });
           });
