@@ -182,7 +182,7 @@ const gameController = {
                     result.data[i]['team2_id'] = team_two.name;
                     result.data[i]['win_expect_id'] = win_expect_team.name;
                     result.data[i]['sport_id'] = sports.name;
-                    result.data[i]['start_date'] = result.data[i].start_date;
+                    result.data[i]['start_date'] = result.data[i].start_date.toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"});
                     result.data[i]['createAt'] = action;
                     result.data[i]['win_status'] = status;
 

@@ -35,6 +35,8 @@
                         <th>Win Team</th>
                         <th>Team One</th>
                         <th>Team Two</th>
+                        <th>Win Date</th>
+                        <th>Action</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -93,6 +95,34 @@
         </div>
       </div>
     </div>  
+    <div class="modal fade" id="modal-win-default">
+      <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title"><Span class="div-class"></Span> Winner Announce</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body">
+                <div class="form-group">
+                  <label for="exampleInputEmail1">Winner Team </label>
+                  <select name="win_team" id="win_team" class="form-control">
+                    <option value="">Select Win Team</option>
+                </select>
+                <input type="hidden" name="id" id="game_winner_id">
+                </div>
+                <br />
+              </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary" id="win-save">Save</button>
+            </div>
+          </div>
+      </div>
+    </div>
 
       <%- include('../../partials/footer.ejs') %>
         <%- include('../../partials/dataTableScript.ejs') %>
@@ -133,14 +163,61 @@
                     { data: 'team_one'},
                     { data: 'team_two' },
                     // { data: 'status', "sWidth": "5%", orderable: false },
-                    // { data: 'createAt', "sWidth": "5%", orderable: false },
+                    { data: 'createdAt' },
+                    { data: 'action',  orderable: false },
                 ]
                     });
           };
           showList()
        
-       
+          $(document).on('click','.win-game',function(){
+             
+             var url = "<%= routeUrl %>game-win";
 
+             var id = $(this).data('id');
+
+             $.ajax({
+                 type: "POST",
+                 url: url,
+                 data: {
+                   id:id,
+                 },
+                 dataType: "json",
+                 success: function (data) {
+                     $('#game_winner_id').val(data.data._id)
+                     var selectOpion=""
+                     selectOpion+="<option value='"+data.data.team_one_id+"'>"+data.data.team_one+"</option>"
+                     selectOpion+="<option value='"+data.data.team_two_id+"'>"+data.data.team_two+"</option>"
+                     $('#win_team').html(selectOpion)
+                 }
+               });
+           })    
+           $(document).on('click','#win-save',function(){
+             
+             var url = "<%= routeUrl %>win-update";
+
+             var id = $('#game_winner_id').val()
+             var win_team_id = $('#win_team').val();
+
+             $.ajax({
+                 type: "POST",
+                 url: url,
+                 data: {id:id,
+                  win_team_id:win_team_id
+                },
+                 dataType: "json",
+                 success: function (data) {
+                  if (data.data.status == 1) {
+                    $("#example2").DataTable().ajax.reload();
+                    $("#modal-win-default").modal("hide");
+                    toastr.success(data.message);
+                      // setTimeout(function() {
+                      //     location.reload()
+                      //   }, 1000);
+                  }
+                 }
+               });
+           })
 
           
          

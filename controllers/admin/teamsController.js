@@ -61,7 +61,7 @@ const sportsController = {
                     result.data[i]['icon'] = img;
                     result.data[i]['createAt'] = action;
                 }
-                console.log(result);
+                // console.log(result);
               res.send(result);
             });
           });

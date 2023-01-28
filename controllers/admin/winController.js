@@ -45,14 +45,14 @@ const winController = {
                     var team_one = await teamModel.findOne({"_id": mongoose.Types.ObjectId(game.team1_id)});
                     var team_two = await teamModel.findOne({"_id": mongoose.Types.ObjectId(game.team2_id)});
 
-                    var action = "";
-                    if(result.data[i]['win_status']==1){
-                        var status = '<label class="badge badge-success">Yes</label>';
-                        var action =   "<button data-toggle='modal' data-target='#modal-default' class='btn btn-sm btn-primary edit-game' data-id='" +result.data[i]['_id']+"'title='Click to Edit'><i class='fas fa-edit'></i></button> <button class='btn btn-sm btn-danger delete-game' data-id='"+result.data[i]['_id']+ "'title='Click to Delete'><i class='fas fa-trash-alt'></i></button>";
-                    }else{
-                        var status = '<label class="badge badge-danger">No</label>';
-                        var action =  "<button class='btn btn-sm btn-danger win-game' data-id='"+result.data[i]['_id']+"' title='Click to Edit' data-toggle='modal' data-target='#modal-win-default'><i class='fa fa-trophy' aria-hidden='true'></i></i></button> <button data-toggle='modal' data-target='#modal-default' class='btn btn-sm btn-primary edit-game' data-id='" +result.data[i]['_id']+"'title='Click to Edit'><i class='fas fa-edit'></i></button> <button class='btn btn-sm btn-danger delete-game' data-id='"+result.data[i]['_id']+ "'title='Click to Delete'><i class='fas fa-trash-alt'></i></button>";
-                    }
+                    // var action = "";
+                    // if(result.data[i]['win_status']==1){
+                        // var status = '<label class="badge badge-success">Yes</label>';
+                        // var action =   "<button data-toggle='modal' data-target='#modal-default' class='btn btn-sm btn-primary edit-game' data-id='" +result.data[i]['_id']+"'title='Click to Edit'><i class='fas fa-edit'></i></button> <button class='btn btn-sm btn-danger delete-game' data-id='"+result.data[i]['_id']+ "'title='Click to Delete'><i class='fas fa-trash-alt'></i></button>";
+                    // }else{
+                        // var status = '<label class="badge badge-danger">No</label>';
+                        var action =  "<button class='btn btn-sm btn-success win-game' data-id='"+game._id+"' title='Click to Edit' data-toggle='modal' data-target='#modal-win-default'><i class='fa fa-trophy' aria-hidden='true'></i></i></button>";
+                    // }
                     
 
                     result.data[i]['_id'] = i + 1;
@@ -63,13 +63,26 @@ const winController = {
                     // result.data[i]['win_expect_id'] = win_expect_team.name;
                     // result.data[i]['sport_id'] = sports.name;
                     // result.data[i]['start_date'] = result.data[i].start_date;
-                    // result.data[i]['createAt'] = action;
+                    result.data[i]['createdAt'] = result.data[i].createdAt.toLocaleDateString('en-us', { year:"numeric", month:"short", day:"numeric"});
+                    result.data[i]['action'] = action;
                     // result.data[i]['win_status'] = status;
                 }
                 // console.log(result);
               res.send(result);
             });
           });
+    },
+
+    winUpdate: async function(req, res, next){
+        let id = req.body.id;
+       let win_team_id = req.body.win_team_id;
+
+       await winModel.updateOne({
+        game_id: mongoose.Types.ObjectId(id)
+        }, {
+            team_id:win_team_id
+        })
+       return createSuccessResponse(res, "Winner Update Successfully", { 'status': 1 });
     }
 }
 module.exports = winController
