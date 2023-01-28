@@ -10,7 +10,7 @@ var router = express.Router();
 router.post('/register',validater.register, userController.register);
 router.post('/login',validater.login, userController.login);
 router.get('/sport-list',apiValidateToken,userController.sportList);
-
+router.get('/game-list',apiValidateToken,userController.gameList);
 
 
 module.exports = router;

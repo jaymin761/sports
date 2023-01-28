@@ -66,6 +66,8 @@ router.get('/wingame', webAuthenticated, winController.winGame);
 router.get('/wingame-listing', webAuthenticated, winController.winGameListing);
 router.post('/win-update', webAuthenticated, winController.winUpdate);
 
-
+//users
+router.get('/users', webAuthenticated, dashboardController.users);
+router.get('/user-listing', webAuthenticated, dashboardController.userListing);
 
 module.exports = router;
